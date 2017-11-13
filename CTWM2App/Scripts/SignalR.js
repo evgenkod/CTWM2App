@@ -1,17 +1,31 @@
-﻿$.connection.hub.start()
-    .done(function () {
-        console.log("It's work");
-        $.connection.mHub.server.announce("Connected!");
-    })
-    .fail(function () { alert("ERROR") });
+﻿(function () {
 
-$.connection.mHub.client.announce = function (message) {
+    var mHub = $.connection.chat;
+    $.connection.hub.start()
+        .done(function () {
+            $.connection.hub.logging = true;
+            writeToPage("It's work");
+            mHub.server.announce("Connected!");
+            mHub.server.getServerDateTime()
+                .done(function (data) { writeToPage(data); })
+                .fail(function (e) { writeToPage(e); });
+        })
+        .fail(function () { writeToPage("ERROR") });
 
-    fAppend(message);
-};
+    mHub.client.announce = function (message) {
 
-var fAppend = function (message) {
-    $("#welcome-messages").append(message + "<br/>");
-    console.log(message);
-};
+        writeToPage(message);
+    };
+
+    var writeToPage = function (message) {
+        $("#welcome-messages").append(message + "<br/>");
+        console.log(message);
+    };
+
+    $("#clickme").on("click", function () {
+        mHub.server.getServerDateTime()
+            .done(function (data) { writeToPage(data); })
+            .fail(function (e) { writeToPage(e); });
+   })
+})();
 
