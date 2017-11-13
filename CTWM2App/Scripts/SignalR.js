@@ -7,12 +7,11 @@
 
 $.connection.mHub.client.announce = function (message) {
 
-    $("#welcome-messages").append(message +"<br/>");
+    fAppend(message);
 };
 
-var x = 5;
-var myFunktion = function () {
-    var x = 10;
+var fAppend = function (message) {
+    $("#welcome-messages").append(message + "<br/>");
+    console.log(message);
 };
 
-console.log(x);
